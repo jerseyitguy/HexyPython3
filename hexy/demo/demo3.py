@@ -15,4 +15,3 @@ hexy.thriller()
 hexy.default()
 
 hexy.shut_down()
-    

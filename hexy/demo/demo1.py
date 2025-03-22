@@ -6,17 +6,17 @@ hexy =  Hexapod()
 print("lie flat, curl up, then get up")
 hexy.boot_up()
 
-print "rotate left"
+print("rotate left")
 hexy.rotate(offset = 40)
 
-print "rotate right"
+print("rotate right")
 hexy.rotate(offset = -40)
 
-print "walk forward"
+print("walk forward")
 hexy.walk(offset = 25, swing = 25)
 
-print "walk backward"
+print("walk backward")
 hexy.walk(offset = 25, swing = -25)
 
-print "lie down, lie flat, curl up, and die"
+print("lie down, lie flat, curl up, and die")
 hexy.shut_down()

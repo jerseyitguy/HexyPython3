@@ -27,7 +27,7 @@ driver2.setPWMFreq(60)
 
 def drive(ch, val):
     driver = driver1 if ch < 16 else driver2
-    ch = ch if ch < 16 else ch - 16    
+    ch = ch if ch < 16 else ch - 16
     driver.setPWM(ch, 0, val)
 
 
@@ -35,9 +35,11 @@ def constrain(val, min_val, max_val):
     return min(max_val, max(min_val, val))
 
 
-def remap(old_val, (old_min, old_max), (new_min, new_max)):
+def remap(old_val, old_range, new_range):
+    old_min, old_max = old_range
+    new_min, new_max = new_range
     new_diff = (new_max - new_min)*(old_val - old_min) / float((old_max - old_min))
-    return int(round(new_diff)) + new_min 
+    return int(round(new_diff)) + new_min
 
 
 class HexapodCore:
@@ -51,7 +53,7 @@ class HexapodCore:
 
         self.left_middle = Leg('left middle', 'LMH', 'LMK', 'LMA')
         self.right_middle = Leg('right middle', 'RMH', 'RMK', 'RMA')
-        
+
         self.left_back = Leg('left back', 'LBH', 'LBK', 'LBA')
         self.right_back = Leg('right back', 'RBH', 'RBK', 'RBA')
 
@@ -64,8 +66,8 @@ class HexapodCore:
 
         self.tripod1 = [self.left_front, self.right_middle, self.left_back]
         self.tripod2 = [self.right_front, self.left_middle, self.right_back]
-        
-        self.hips, self.knees, self.ankles = [], [], []
+
+        self.hips, self.knees, self.ankles =[],[],[]
 
         for leg in self.legs:
             self.hips.append(leg.hip)
@@ -75,9 +77,9 @@ class HexapodCore:
     def off(self):
 
         self.neck.off()
-        
+
         for leg in self.legs:
-            leg.off() 
+            leg.off()
 
 
 class Leg:
@@ -85,7 +87,7 @@ class Leg:
     def __init__(self, name, hip_key, knee_key, ankle_key):
 
         max_hip, max_knee, knee_leeway = 45, 50, 10
-        
+
         self.hip = Joint("hip", hip_key, max_hip)
         self.knee = Joint("knee", knee_key, max_knee, leeway = knee_leeway)
         self.ankle = Joint("ankle", ankle_key)
@@ -100,7 +102,7 @@ class Leg:
         self.ankle.pose(ankle_angle)
 
     def move(self, knee_angle = None, hip_angle = None, offset = 100):
-        """ knee_angle < 0 means thigh is raised, ankle's angle will be set to the specified 
+        """ knee_angle < 0 means thigh is raised, ankle's angle will be set to the specified
             knee angle minus the offset. offset best between 80 and 110 """
 
         if knee_angle == None: knee_angle = self.knee.angle
@@ -119,7 +121,7 @@ class Leg:
     def off(self):
         for joint in self.joints:
             joint.off()
-        
+
     def __repr__(self):
         return 'leg: ' + self.name
 
@@ -141,7 +143,7 @@ class Joint:
 
         drive(self.channel, pulse)
         self.angle = angle
-        
+
         #print repr(self), ':', 'pulse', pulse
 
     def off(self):
@@ -150,4 +152,3 @@ class Joint:
 
     def __repr__(self):
         return 'joint: ' + self.joint_type + ' : ' + self.name + ' angle: ' + str(self.angle)
- 
