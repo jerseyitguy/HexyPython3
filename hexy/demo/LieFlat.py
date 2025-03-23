@@ -5,3 +5,4 @@ hexy =  Hexapod()
 
 print("lie flat")
 hexy.lie_flat()
+#to reset
